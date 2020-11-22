@@ -119,7 +119,7 @@ def get_route(hostname):
                   
                     tracelist1.append(bytes)
                     tracelist2.append(tracelist1)
-                    #
+                    
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
