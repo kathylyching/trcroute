@@ -110,7 +110,7 @@ def get_route(hostname):
                     
                 except herror:  
                     
-                    tracelist1.append("hostname not returnable") 
+                    tracelist1.append("Hostname not returnable") 
                     tracelist2.append(tracelist1)
                     
                 if types == 11:
