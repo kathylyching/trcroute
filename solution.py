@@ -11,12 +11,10 @@ MAX_HOPS = 30
 TIMEOUT = 2.0
 TRIES = 1
 ID = os.getpid() & 0xffff
-# The packet that we shall send to each router along the path is the ICMP echo
-# request packet, which is exactly what we had used in the ICMP ping exercise.
-# We shall use the same packet that we built in the Ping exercise
+
 
 def checksum(string):
-# In this function we make the checksum of our packet
+
     csum = 0
     countTo = (len(string) // 2) * 2
     count = 0
@@ -39,24 +37,10 @@ def checksum(string):
     return answer
 
 def build_packet():
-    #Fill in start
-    # In the sendOnePing() method of the ICMP Ping exercise ,firstly the header of our
-    # packet to be sent was made, secondly the checksum was appended to the header and
-    # then finally the complete packet was sent to the destination.
-
-    # Make the header in a similar way to the ping exercise.
-    # Append checksum to the header.
-
-    # Don’t send the packet yet , just return the final packet in this function.
-    #Fill in end
-
-    # So the function ending should look like this
-
-        # Header is type (8), code (8), checksum (16), id (16), sequence (16)
+    
 
     myChecksum = 0
-    # Make a dummy header with a 0 checksum.
-    # struct -- Interpret strings as packed binary data
+   
     
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
 
@@ -126,8 +110,8 @@ def get_route(hostname):
                     
                 except herror:  
                     
-                    return "hostname not returnable"
-                    
+                    tracelist1.append("hostname not returnable") 
+                    tracelist2.append(tracelist1)
 
                 if types == 11:
                     bytes = struct.calcsize("d")
