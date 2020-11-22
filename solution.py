@@ -56,7 +56,7 @@ def build_packet():
     myChecksum = 0
     # Make a dummy header with a 0 checksum.
     # struct -- Interpret strings as packed binary data
-    ID = os.getpid() & 0xffffffff
+    ID = os.getpid() & 0xffff
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
 
     data = struct.pack("d", time.time())
@@ -66,11 +66,11 @@ def build_packet():
 
     # Get the right checksum, and put in the header
     if sys.platform == 'darwin':
-        myChecksum = socket.htons(myChecksum) & 0xffff  # Convert 16-bit integers from host to network byte order.
+        myChecksum = htons(myChecksum) & 0xffff  # Convert 16-bit integers from host to network byte order.
     else:
-        myChecksum = socket.htons(myChecksum)
+        myChecksum = htons(myChecksum)
 
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
+    header = pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
 
     packet = header + data
     return packet
