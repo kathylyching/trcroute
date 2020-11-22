@@ -116,33 +116,32 @@ def get_route(hostname):
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    rtt = (timeReceived - startedSelect) * 100
-                    tracelist1.append([ttl, str(rtt),dest,hostname])
+                    rtt = (timeReceived - startedSelect) * 1000
+                    tracelist1.append([ttl, str(int(rtt)) +'ms',dest,hostname])
                     tracelist2.append(tracelist1)
                     
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    rtt = (timeReceived - startedSelect) * 100
-                    tracelist1.append([ttl, str(rtt),dest,hostname])
+                    rtt = (timeReceived - startedSelect) * 1000
+                    tracelist1.append([ttl, str(int(rtt)) +'ms',dest,hostname])
                     tracelist2.append(tracelist1) 
                     
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    rtt = (timeReceived - startedSelect) * 100
-                    tracelist1.append([ttl, str(rtt),dest,hostname])
+                    rtt = (timeReceived - startedSelect) * 1000
+                    tracelist1.append([ttl, str(int(rtt)) +'ms',dest,hostname])
                     tracelist2.append(tracelist1)
                     if packetID == ID:
                         return tracelist2
                        
                 else:
-                    rtt = (timeReceived - startedSelect) * 100
-                    tracelist1.append([ttl,str(rtt),dest,"hostname not returnable"])
+                    rtt = (timeReceived - startedSelect) * 1000
+                    tracelist1.append([ttl,str(int(rtt)) +'ms',dest,"hostname not returnable"])
                     tracelist2.append(tracelist1)
                    
                 break
             finally:
                 mySocket.close()
                 return tracelist2
-
