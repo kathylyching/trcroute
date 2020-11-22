@@ -62,12 +62,12 @@ def build_packet():
 
     data = struct.pack("d", time.time())
 
-    # Calculate the checksum on the data and the dummy header.
+   
     myChecksum = checksum(header + data)
 
-    # Get the right checksum, and put in the header
+   
     if sys.platform == 'darwin':
-        myChecksum = htons(myChecksum) & 0xffff  # Convert 16-bit integers from host to network byte order.
+        myChecksum = htons(myChecksum) & 0xffff 
     else:
         myChecksum = htons(myChecksum)
 
@@ -78,19 +78,17 @@ def build_packet():
 
 def get_route(hostname):
     timeLeft = TIMEOUT
-    tracelist1 = [] #This is your list to use when iterating through each trace 
-    tracelist2 = [] #This is your list to contain all traces
+    tracelist1 = [] 
+    tracelist2 = []
 
     for ttl in range(1,MAX_HOPS):
         for tries in range(TRIES):
             destAddr = gethostbyname(hostname)
 
-            #Fill in start
-            # Make a raw socket named mySocket
+
             icmp = getprotobyname("icmp")
             mySocket = socket(AF_INET, SOCK_RAW, icmp)
 
-            #Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
@@ -103,69 +101,64 @@ def get_route(hostname):
                 howLongInSelect = (time.time() - startedSelect)
                 if whatReady[0] == []: # Timeout
                     tracelist1.append("* * * Request timed out.")
-                    #Fill in start
-                    #You should add the list above to your all traces list
+          
                     tracelist2.append(tracelist1)
-                    #Fill in end
+                   
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
                 if timeLeft <= 0:
                     tracelist1.append("* * * Request timed out.")
-                    #Fill in start
-                    #You should add the list above to your all traces list
+                   
                     tracelist2.append(tracelist1)
-                    #Fill in end
+                    
             except timeout:
                 continue
 
             else:
-                #Fill in start
-                #Fetch the icmp type from the IP packet
+               
                 icmph = recvPacket[20:28]
                 types, code, checksum, packetID, sq = struct.unpack("bbHHh", icmph)
-                #Fill in end
-                try: #try to fetch the hostname
-                    #Fill in start
+                
+                try: 
+                    
                     dest = gethostbyname(hostname)
-                    #Fill in end
-                except herror:   #if the host does not provide a hostname
-                    #Fill in start
+                    
+                except herror:  
+                    
                     return "hostname not returnable"
-                    #Fill in end
+                    
 
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    #Fill in start
-                    #You should add your responses to your lists here
+                  
                     tracelist1.append(bytes)
                     tracelist2.append(tracelist1)
-                    #Fill in end
+                    #
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    #Fill in start
-                    #You should add your responses to your lists here
+                    
                     tracelist1.append(bytes)
                     tracelist2.append(tracelist1) 
-                    #Fill in end
+                    
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    #Fill in start
-                    #You should add your responses to your lists here and return your list if your destination IP is met
+                   
                     tracelist1.append(bytes)
                     tracelist2.append(tracelist1)
                     if packetID == ID:
                         return tracelist2
-                    #Fill in end
+                   
                 else:
-                    #Fill in start
-                    #If there is an exception/error to your if statements, you should append that to your list here
+                    
                     tracelist1.append("hostname not returnable")
                     tracelist2.append(tracelist1)
-                    #Fill in end
+                   
                 break
             finally:
                 mySocket.close()
+
+
