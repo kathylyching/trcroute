@@ -112,37 +112,38 @@ def get_route(hostname):
                     
                     tracelist1.append("hostname not returnable") 
                     tracelist2.append(tracelist1)
-
+                    
                 if types == 11:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                  
-                    tracelist1.append(bytes)
+                    rtt = (timeReceived - startedSelect) * 100
+                    tracelist1.append([ttl, str(rtt),dest,hostname])
                     tracelist2.append(tracelist1)
                     
                 elif types == 3:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                    
-                    tracelist1.append(bytes)
+                    rtt = (timeReceived - startedSelect) * 100
+                    tracelist1.append([ttl, str(rtt),dest,hostname])
                     tracelist2.append(tracelist1) 
                     
                 elif types == 0:
                     bytes = struct.calcsize("d")
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
-                   
-                    tracelist1.append(bytes)
+                    rtt = (timeReceived - startedSelect) * 100
+                    tracelist1.append([ttl, str(rtt),dest,hostname])
                     tracelist2.append(tracelist1)
                     if packetID == ID:
                         return tracelist2
-                   
+                       
                 else:
-                    
-                    tracelist1.append("hostname not returnable")
+                    rtt = (timeReceived - startedSelect) * 100
+                    tracelist1.append([ttl,str(rtt),dest,"hostname not returnable"])
                     tracelist2.append(tracelist1)
                    
                 break
             finally:
                 mySocket.close()
+                return tracelist2
 
-
+    
