@@ -145,3 +145,11 @@ def get_route(hostname):
             finally:
                 mySocket.close()
                 return tracelist2
+
+get_route("www.google.com")
+
+get_route("www.bmw.gr")
+
+get_route("olx.com.ar")
+
+get_route("www.yandex.ru")
